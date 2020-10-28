@@ -1,4 +1,4 @@
-const ApiKey = "use your own key";
+const ApiKey = "1d2f686e5d2f4d1b950b398602151960";
 const baseUrl = "https://api.football-data.org/v2/";
 const leagueId = "2021";
 const baseEndPoin = `${baseUrl}competitions/${leagueId}`;
@@ -8,6 +8,9 @@ const matchEndPoin = `${baseUrl}competitions/${leagueId}/matches`;
 
 const contents = document.querySelector("#content-list");
 const title = document.querySelector(".card-title");
+const player = document.querySelector('#player-list');
+const competition = document.querySelector('#comp-list');
+
 const fetchHeader = {
     headers: {
         'X-Auth-Token': ApiKey
@@ -29,11 +32,19 @@ function getListTeams() {
                     <p>Berdiri: ${team.founded} <br>
                        Markas: ${team.venue}
                     </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">info</i></a>
+                    <a href="#!" class="secondary-content" data-teamid="${team.id}"><i class="material-icons" data-teamid="${team.id}">info</i></a>
                 </li>
                 `
             });
-            contents.innerHTML = '<ul class="collection">' + teams + '</ul>'
+            contents.innerHTML = '<ul class="collection">' + teams + '</ul>';
+            player.innerHTML = '';
+            competition.innerHTML = '';
+            const detail = document.querySelectorAll('.secondary-content');
+            detail.forEach(btn=>{
+                btn.onclick=(event)=>{
+                    showTeamDetail(event.target.dataset.teamid);
+                }
+            })
         }).catch(err => {
             console.error(err);
         })
@@ -82,9 +93,65 @@ function getListStandings() {
                     </table>
                 </div>
             `;
+            player.innerHTML = '';
+            competition.innerHTML = '';
         }).catch(err => {
             console.error(err);
         })
+}
+
+function showTeamDetail(teamid){
+    let url = baseUrl+"teams/"+teamid;
+    fetch(url, fetchHeader).then(response => response.json()).then(data => {
+        let team_detail = "";
+        let team_player = "";
+        let team_comp = "";
+
+        team_detail +=`
+        <div class="col xl6">
+            <img src="${data.crestUrl}" alt="" class="circle detail-thumb">
+        </div>
+        <div class="col xl6"> 
+            <p style="font-size:20px;">
+            Berdiri : ${data.founded} <br>
+            Markas : ${data.venue} <br>
+            Alamat : ${data.address} <br>
+            Phone : ${data.phone} <br>
+            Tahun berdiri : ${data.founded} <br>
+            Website : ${data.Website}
+            </p>
+        </div>
+        `;
+
+        data.squad.forEach(player => {
+            team_player+=`
+            <tr>
+                <td>${player.name}</td>
+                <td>${player.position}</td>
+                <td>${player.nationality}</td>
+              </tr>
+            `;
+        });
+
+        data.activeCompetitions.forEach(comp => {
+            team_comp += `
+                <li class="collection-item">
+                    <p>
+                        Nama Liga : ${comp.name} <br>
+                        Plan : ${comp.tier}
+                    </p>
+                </li>
+            `
+        });
+
+
+        title.innerHTML = `${data.name}`;
+        contents.innerHTML = '<ul class="collection">' + team_detail + '</ul>';
+        competition.innerHTML = '<h4>Active Competitions</h4><ul class="collection">' + team_comp + '</ul>';
+        player.innerHTML = '<h4>Squad</h4><table id="myTable"><thead><tr><th>Nama</th><th>Posisi</th><th>Kewarganegaraan</th></tr></thead><tbody>' + team_player + '</tbody></table>'
+    }).catch(err => {
+        console.error(err);
+    });
 }
 
 function getListMatches() {
@@ -125,6 +192,8 @@ function getListMatches() {
                     </table>
                 </div>
             `;
+            player.innerHTML = '';
+            competition.innerHTML = '';
         }).catch(err => {
             console.error(err);
         })
