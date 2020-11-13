@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Movie</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+    </head>
+<body>
+
+	<div class="container mt-5" style="max-width: 500px;">
+		<h1><strong>MovieList.com</strong></h1>
+		<div class="input-group">
+				<input type="text" name="keyword" id="keyword" class="form-control form-control-sm" placeholder="Movie title here..."required>
+				<div class="input-group-append">
+					<button class="btn btn-info btn-sm" id="cari">Cari</button>
+				</div>
+		</div>
+	</div>
+	<div class="container mt-3 mb-3" id="notFoundResult" style="max-width: 500px;">
+		
+	</div>
+	<div class="container mt-3 mb-3" >
+		<div class="row" id="FoundResult">
+		</div>
+	</div>
+
+	<div class="container mt-3 mb-3">
+		<button id="back" style="display: none;" class="btn btn-outline-success btn-sm mb-3">Back</button>
+		<div class="row" id="FoundResultDetail">
+		</div>
+	</div>
+
+	
+
+	 <p align="center" style="font-size: 12px; position: fixed; bottom: 0; left: 0; right: 0;">Copyright © 2020 Gaptech.</p>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="index.js"></script>
+
+	<script type="text/javascript">
+		$('#back').click(function(){
+	  		$('#FoundResult').slideDown();
+	  		// $('#FoundResultDetail').css('display','none');
+	  		$('#back').css('display','none');
+	  		$('#FoundResultDetail').html('');
+	  	})
+	</script>
+
+</body>
+</html>
